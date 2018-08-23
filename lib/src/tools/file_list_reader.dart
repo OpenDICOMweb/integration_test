@@ -9,10 +9,13 @@
 import 'dart:collection';
 
 /// Reads a Map<directory, List<file>>, where directory and file are [String]s.
-class FileListReader extends IterableBase<String> {
+class FileMapReader extends IterableBase<String> {
+ // final Map<String, List<String>> fileMap;
   final Map<String, List<String>> fileMap;
 
-  FileListReader.fromMap(this.fileMap);
+  FileMapReader(this.fileMap);
+
+  FileMapReader.fromMap(this.fileMap);
 
   @override
   FileListIterator get iterator => new FileListIterator(fileMap);

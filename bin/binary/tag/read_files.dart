@@ -8,6 +8,7 @@
 //
 import 'package:core/core.dart';
 import 'package:io_extended/io_extended.dart';
+import 'package:integration_test/src/tools/file_list_reader.dart';
 
 const String dir6684_2017_5 = 'C:/acr/odw/test_data/6684/2017/5';
 

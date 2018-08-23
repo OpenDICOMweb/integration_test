@@ -27,7 +27,7 @@ const Map<String, List<String>> badTransferSyntax =
 };
 
 Future main() async {
-  final fileList = new FileListReader.fromMap(badTransferSyntax);
+  final fileList = new FileMapReader.fromMap(badTransferSyntax);
 
   for (var path in fileList) {
     print('"$path"');

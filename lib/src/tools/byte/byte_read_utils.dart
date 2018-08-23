@@ -19,7 +19,8 @@ String outPath = 'C:/odw/sdk/convert/bin/output/out.dcm';
 
 final Formatter format = Formatter();
 
-bool readWriteFileChecked(String path,
+bool readWriteFileChecked(
+    String path, Reader makeReader(Uint8List bList, {bool doLogging}),
     {int fileNumber, int width = 5, bool fast = true, bool doLogging = false}) {
   var success = true;
   final n = getPaddedInt(fileNumber, width);
@@ -31,9 +32,11 @@ bool readWriteFileChecked(String path,
   try {
     final bList0 = f.readAsBytesSync();
     if (doLogging) log.info('  File Length: ${bList0.length}');
-    final reader0 = ByteReader(bList0, doLogging: doLogging);
+
+    final reader0 = makeReader(bList0, doLogging: doLogging);
     final rds0 = reader0.readRootDataset();
     final bytes0 = reader0.rb.buffer;
+
     log.info('$n:   read ${bytes0.length} bytes');
     final e = rds0[kPixelData];
     if (e == null) log.warn('$pad ** Pixel Data Element not present');
@@ -52,7 +55,7 @@ bool readWriteFileChecked(String path,
     log.debug('  Bytes written: offset(${bytes1.offset}) '
         'length(${bytes1.length})\n');
 
-    ByteReader reader1;
+    Reader reader1;
     msg = (fast)
         ? '  Reading (${bytes1.length} bytes'
         : '  Reading (${f.lengthSync()} bytes) from: $outPath';
@@ -60,10 +63,10 @@ bool readWriteFileChecked(String path,
 
     if (fast) {
       // Just read bytes not file
-      reader1 = ByteReader.fromBytes(bytes1, doLogging: doLogging);
+      reader1 = makeReader.fromBytes(bytes1, doLogging: doLogging);
     } else {
       final f = File(outPath);
-      reader1 = ByteReader.fromFile(f, doLogging: doLogging);
+      reader1 = reader.fromFile(f, doLogging: doLogging);
     }
 
     final rds1 = reader1.readRootDataset();
